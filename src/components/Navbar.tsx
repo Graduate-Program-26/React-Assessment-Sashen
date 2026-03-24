@@ -1,4 +1,5 @@
-import { Github } from "lucide-react"
+import { Github } from "lucide-react";
+import ThemeToggle from "@/components/ThemeToggle";
 
 export default function Navbar() {
   return (
@@ -9,7 +10,8 @@ export default function Navbar() {
           <Github className="w-5 h-5" />
           GitHub Dashboard
         </div>
-
+        {/* ThemeToggle to be top right corner*/}
+        <ThemeToggle />
       </div>
     </header>
   )
