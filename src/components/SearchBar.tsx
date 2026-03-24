@@ -1,19 +1,22 @@
-import { useState } from "react"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { Search } from "lucide-react"
+import { useState } from "react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Search } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export default function SearchBar() {
-  const [username, setUsername] = useState("")
+  const [username, setUsername] = useState("");
+  const navigate = useNavigate();
 
   function handleSearch() {
-    const trimmed = username.trim()
-    if (!trimmed) return
-    console.log("Searching for:", trimmed)
+    const trimmed = username.trim();
+
+    if (!trimmed) return;
+    navigate(`/user/${trimmed}`);
   }
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (e.key === "Enter") handleSearch()
+    if (e.key === "Enter") handleSearch();
   }
 
   return (
@@ -30,5 +33,5 @@ export default function SearchBar() {
         Search
       </Button>
     </div>
-  )
+  );
 }

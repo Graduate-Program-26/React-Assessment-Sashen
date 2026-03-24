@@ -9,13 +9,13 @@ import { Button } from "@/components/ui/button";
 export default function LandingPage() {
     const clientId = import.meta.env.VITE_GITHUB_CLIENT_ID;
     const redirectUri = import.meta.env.VITE_REDIRECT_URI;
-  
-    function handleLogin() { 
+
+    function handleLogin() {
         window.location.href = `https://github.com/login/oauth/authorize` +
                                `?client_id=${clientId}` +
                                `&redirect_uri=${redirectUri}` +
                                `&scope=read:user,public_repo`}
-    
+
     return (
         <div className="min-h-screen flex flex-col">
 
