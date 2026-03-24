@@ -12,7 +12,7 @@ export default function LandingPage() {
 
     function handleLogin() {
         // Generate a random state value and store it
-        // Prevents CSRF — state is verified when GitHub redirects back
+        // Prevents CSRF state is verified when GitHub redirects back, Lebo point oout could have possible security vulnerability so did some digging and found CSRF.
         const state = crypto.randomUUID();
         sessionStorage.setItem("oauth_state", state);
 
