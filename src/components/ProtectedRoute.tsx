@@ -7,7 +7,7 @@ export default function ProtectedRoute({
 }: {
     children: React.ReactNode;
 }) {
-    const isAuthenticated = useAuthStore((store: ReturnType<typeof useAuthStore.getState>) => store.isAuthenticated);
+    const isAuthenticated = !!useAuthStore((store: ReturnType<typeof useAuthStore.getState>) => store.token);
 
     if (!isAuthenticated) {
         return <Navigate to="/" replace />;

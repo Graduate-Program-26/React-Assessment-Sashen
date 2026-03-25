@@ -2,7 +2,7 @@ import Navbar from "@/components/Navbar";
 import SearchBar from "@/components/SearchBar";
 import FeatureCards from "@/components/FeatureCards";
 import { Separator } from "@/components/ui/separator";
-import { Github } from "lucide-react";
+import { Github } from "lucide-react"; // Will need to use another icon for ui like react-icons
 import { Button } from "@/components/ui/button";
 
 // Needed to export as default for the main component for the route
