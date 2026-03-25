@@ -1,6 +1,25 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/stores/authStore";
+import { z } from "zod";
+
+// Schema for the token response from our serverless function
+const TokenSchema = z.object({
+    access_token: z.string(),
+});
+
+// Schema for the GitHub user response
+const GitHubUserSchema = z.object({
+    login:        z.string(),
+    name:         z.string().nullable(),
+    avatar_url:   z.string(),
+    bio:          z.string().nullable(),
+    followers:    z.number(),
+    following:    z.number(),
+    public_repos: z.number(),
+    html_url:     z.string(),
+    location:     z.string().nullable(),
+});
 
 export default function CallbackPage() {
     const navigate = useNavigate();
@@ -29,12 +48,7 @@ export default function CallbackPage() {
             try {
                 // Call our Vercel serverless function
                 const res = await fetch(`/api/callback?code=${code}`);
-                const data = await res.json();
-
-                if (!data.access_token) {
-                    navigate("/");
-                    return;
-                }
+                const data = TokenSchema.parse(await res.json());
 
                 setToken(data.access_token);
 
@@ -42,7 +56,7 @@ export default function CallbackPage() {
                 const userRes = await fetch("https://api.github.com/user", {
                     headers: { "Authorization": `Bearer ${data.access_token}` },
                 });
-                const user = await userRes.json();
+                const user = GitHubUserSchema.parse(await userRes.json());
                 setUser(user);
                 navigate("/dashboard");
 
