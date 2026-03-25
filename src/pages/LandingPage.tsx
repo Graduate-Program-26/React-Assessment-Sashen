@@ -11,10 +11,18 @@ export default function LandingPage() {
     const redirectUri = import.meta.env.VITE_REDIRECT_URI;
 
     function handleLogin() {
-        window.location.href = `https://github.com/login/oauth/authorize` +
-                               `?client_id=${clientId}` +
-                               `&redirect_uri=${redirectUri}` +
-                               `&scope=read:user,public_repo`}
+        // Generate a random state value and store it
+        // Prevents CSRF state is verified when GitHub redirects back, Lebo point oout could have possible security vulnerability so did some digging and found CSRF.
+        const state = crypto.randomUUID();
+        sessionStorage.setItem("oauth_state", state);
+
+        window.location.href =
+            `https://github.com/login/oauth/authorize` +
+            `?client_id=${clientId}` +
+            `&redirect_uri=${redirectUri}` +
+            `&scope=read:user,public_repo` +
+            `&state=${state}`;
+    }
 
     return (
         <div className="min-h-screen flex flex-col">
@@ -47,6 +55,7 @@ export default function LandingPage() {
             <Button
               variant="outline"
               className="w-full max-w-md h-10 gap-2"
+              onClick={handleLogin}
             >
               <Github className="w-4 h-4" />
               Continue with GitHub
