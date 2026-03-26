@@ -1,10 +1,13 @@
 import { useSearchParams } from "react-router-dom";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { searchUsers } from "@/api/github";
+import type { SearchUser } from "@/api/github";
+
+const RESULTS_PER_PAGE = 5;
 
 export function useSearchResults() {
-    const [searchParams]  = useSearchParams();
-    const searchQuery = searchParams.get("q") ?? "";
+    const [searchParams] = useSearchParams();
+    const searchQuery    = searchParams.get("q") ?? "";
 
     const {
         data,
@@ -12,11 +15,12 @@ export function useSearchResults() {
         hasNextPage,
         isLoading,
     } = useInfiniteQuery({
-        queryKey:["search", searchQuery],
-        queryFn: ({ pageParam }) => searchUsers(searchQuery, pageParam),
+        queryKey: ["search-results", searchQuery],
+        queryFn: ({ pageParam }: { pageParam: number }) =>
+            searchUsers(searchQuery, pageParam),
         initialPageParam: 1,
-        getNextPageParam: (lastPageResults, allPages) =>
-            lastPageResults.length === 5 ? allPages.length + 1 : undefined,
+        getNextPageParam: (lastPage: SearchUser[], _allPages: SearchUser[][], lastPageParam: number) =>
+            lastPage?.length === RESULTS_PER_PAGE ? lastPageParam + 1 : undefined,
         enabled: searchQuery.length > 0,
     });
 

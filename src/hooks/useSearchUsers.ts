@@ -15,7 +15,7 @@ export function useSearchUsers() {
     const [debouncedQuery] = useDebounce(searchQuery, DEBOUNCE_DELAY_MS);
 
     const { data: searchResults } = useQuery({
-        queryKey: ["search", debouncedQuery],
+        queryKey: ["search-dropdown", debouncedQuery],
         queryFn:  () => searchUsers(debouncedQuery),
         enabled:  debouncedQuery.length > MIN_QUERY_LENGTH,
     });
