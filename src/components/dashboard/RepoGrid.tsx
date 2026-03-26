@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useAuthStore } from "@/stores/authStore";
 import { fetchAuthRepos } from "@/api/github";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Star } from "lucide-react";
 
@@ -40,9 +41,21 @@ export default function RepoGrid() {
                     : topRepositories?.slice(0, MAX_REPOSITORIES_SHOWN).map((repository) => (
                         <Card key={repository.id}>
                             <CardHeader className="pb-2">
-                                <CardTitle className="text-sm font-semibold text-blue-400 truncate">
-                                    {repository.name}
-                                </CardTitle>
+                                <div className="flex items-center justify-between gap-2">
+                                    <CardTitle className="text-sm font-semibold truncate">
+                                        <a
+                                            href={`https://github.com/${repository.full_name}`}
+                                            target="_blank"
+                                            rel="noreferrer"
+                                            className="text-blue-400 hover:underline"
+                                        >
+                                            {repository.name}
+                                        </a>
+                                    </CardTitle>
+                                    <Badge variant={repository.private ? "destructive" : "secondary"} className="text-xs shrink-0">
+                                        {repository.private ? "Private" : "Public"}
+                                    </Badge>
+                                </div>
                             </CardHeader>
                             <CardContent>
                                 <p className="text-xs text-muted-foreground mb-3 line-clamp-2">

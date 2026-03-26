@@ -53,9 +53,11 @@ export async function fetchLastActivity(username: string) {
 const DashboardRepoSchema = z.object({
     id:               z.number(),
     name:             z.string(),
+    full_name:        z.string(),
     description:      z.string().nullable(),
     language:         z.string().nullable(),
     stargazers_count: z.number(),
+    private:          z.boolean(),
 });
 
 export type DashboardRepo = z.infer<typeof DashboardRepoSchema>;
