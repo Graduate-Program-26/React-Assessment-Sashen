@@ -22,9 +22,13 @@ const RepoSchema = z.object({
 
 const RepoListSchema = z.array(RepoSchema);
 
-const EventSchema = z.object({
+export const EventSchema = z.object({
+    type:       z.string(),
     created_at: z.string(),
+    repo:       z.object({ name: z.string() }),
 });
+
+export type GitHubEvent = z.infer<typeof EventSchema>;
 
 const EventListSchema = z.array(EventSchema);
 
@@ -35,13 +39,13 @@ export async function fetchUser(username: string): Promise<GitHubUser> {
 }
 
 export async function fetchRepos(username: string) {
-    const res = await fetch(`https://api.github.com/users/${username}/repos?per_page=100`);
+    const res = await fetch(`https://api.github.com/users/${username}/repos?per_page=10`);
     if (!res.ok) throw new Error("Could not fetch repos");
     return RepoListSchema.parse(await res.json());
 }
 
 export async function fetchLastActivity(username: string) {
-    const res = await fetch(`https://api.github.com/users/${username}/events?per_page=1`);
+    const res = await fetch(`https://api.github.com/users/${username}/events?per_page=10`);
     if (!res.ok) throw new Error("Could not fetch activity");
     return EventListSchema.parse(await res.json());
 }

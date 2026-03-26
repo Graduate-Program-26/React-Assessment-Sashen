@@ -10,6 +10,7 @@ import ProfileDateLocation from "@/components/profile/ProfileDateLocation";
 import ProfileStats from "@/components/profile/ProfileStats";
 import TopLanguages from "@/components/profile/TopLanguages";
 import ContributionCalendar from "@/components/profile/ContributionCalendar";
+import RecentActivity from "@/components/profile/RecentActivity";
 
 const FIVE_MINUTES_MS = 5 * 60 * 1000;
 
@@ -93,6 +94,7 @@ export default function ProfilePreviewPage() {
                             publicRepos={user.public_repos}
                         />
                         <TopLanguages languages={topLanguages} />
+                        {events && <RecentActivity events={events} />}
                         <ContributionCalendar username={user.login} />
                     </div>
                 )}
