@@ -1,18 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-
-// Shape of a GitHub user object returned from /user endpoint
-interface GitHubUser {
-  login:        string;
-  name:         string | null;
-  avatar_url:   string;
-  bio:          string | null;
-  followers:    number;
-  following:    number;
-  public_repos: number;
-  html_url:     string;
-  location:     string | null;
-}
+import type { GitHubUser } from "@/api/github";
 
 interface AuthState {
   token:    string | null;

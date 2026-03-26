@@ -46,7 +46,7 @@ export async function fetchRepos(username: string) {
 
 export async function fetchLastActivity(username: string) {
     const res = await fetch(`https://api.github.com/users/${username}/events?per_page=10`);
-    if (!res.ok) throw new Error("Could not fetch activity");
+    if (!res.ok) throw new Error("Could not fetch activity.");
     return EventListSchema.parse(await res.json());
 }
 
@@ -70,6 +70,15 @@ export async function fetchAuthRepos(token: string) {
     );
     if (!res.ok) throw new Error("Could not fetch repos");
     return DashboardRepoListSchema.parse(await res.json());
+}
+
+export async function fetchAuthActivity(username: string, token: string) {
+    const res = await fetch(
+        `https://api.github.com/users/${username}/events?per_page=10`,
+        { headers: { "Authorization": `Bearer ${token}` } }
+    );
+    if (!res.ok) throw new Error("Could not fetch activity");
+    return EventListSchema.parse(await res.json());
 }
 
 export function countTopLanguages(repos: { language: string | null }[]): string[] {
