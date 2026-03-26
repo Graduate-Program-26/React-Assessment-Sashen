@@ -94,9 +94,11 @@ const SearchResultSchema = z.object({
 
 export type SearchUser = z.infer<typeof SearchUserSchema>;
 
-export async function searchUsers(query: string): Promise<SearchUser[]> {
+const SEARCH_RESULTS_PER_PAGE = 5;
+
+export async function searchUsers(query: string, page = 1): Promise<SearchUser[]> {
     const res = await fetch(
-        `https://api.github.com/search/users?q=${encodeURIComponent(query)}&per_page=5`
+        `https://api.github.com/search/users?q=${encodeURIComponent(query)}&per_page=${SEARCH_RESULTS_PER_PAGE}&page=${page}`
     );
     if (!res.ok) throw new Error("Search failed");
     const data = SearchResultSchema.parse(await res.json());
