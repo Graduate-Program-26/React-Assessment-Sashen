@@ -50,6 +50,26 @@ export async function fetchLastActivity(username: string) {
     return EventListSchema.parse(await res.json());
 }
 
+const DashboardRepoSchema = z.object({
+    id:               z.number(),
+    name:             z.string(),
+    description:      z.string().nullable(),
+    language:         z.string().nullable(),
+    stargazers_count: z.number(),
+});
+
+export type DashboardRepo = z.infer<typeof DashboardRepoSchema>;
+const DashboardRepoListSchema = z.array(DashboardRepoSchema);
+
+export async function fetchAuthRepos(token: string) {
+    const res = await fetch(
+        "https://api.github.com/user/repos?sort=stars&per_page=6",
+        { headers: { "Authorization": `Bearer ${token}` } }
+    );
+    if (!res.ok) throw new Error("Could not fetch repos");
+    return DashboardRepoListSchema.parse(await res.json());
+}
+
 export function countTopLanguages(repos: { language: string | null }[]): string[] {
     const languageCounts: Record<string, number> = {};
 
