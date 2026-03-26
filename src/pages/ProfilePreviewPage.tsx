@@ -1,4 +1,4 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
@@ -16,6 +16,15 @@ const FIVE_MINUTES_MS = 5 * 60 * 1000;
 
 export default function ProfilePreviewPage() {
     const { username } = useParams<{ username: string }>();
+    const navigate = useNavigate();
+
+    function handleBack() {
+        if (window.history.length > 1) {
+            navigate(-1);
+        } else {
+            navigate("/");
+        }
+    }
 
     const { data: user, isLoading, isError } = useQuery({
         queryKey: ["user", username],
@@ -52,11 +61,9 @@ export default function ProfilePreviewPage() {
             <Navbar />
             <main className="max-w-2xl mx-auto px-4 py-12 w-full">
 
-                <Link to="/">
-                    <Button variant="ghost" size="sm" className="mb-6 gap-2">
-                        <ArrowLeft className="w-4 h-4" /> Back to search
-                    </Button>
-                </Link>
+                <Button variant="ghost" size="sm" className="mb-6 gap-2" onClick={handleBack}>
+                    <ArrowLeft className="w-4 h-4" /> Back
+                </Button>
 
                 {isLoading && (
                     <div className="flex gap-4 items-center">
