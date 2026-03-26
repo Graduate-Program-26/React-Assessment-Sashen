@@ -1,24 +1,12 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/stores/authStore";
+import { GitHubUserSchema } from "@/api/github";
 import { z } from "zod";
 
 // Schema for the token response from our serverless function
 const TokenSchema = z.object({
     access_token: z.string(),
-});
-
-// Schema for the GitHub user response
-const GitHubUserSchema = z.object({
-    login:        z.string(),
-    name:         z.string().nullable(),
-    avatar_url:   z.string(),
-    bio:          z.string().nullable(),
-    followers:    z.number(),
-    following:    z.number(),
-    public_repos: z.number(),
-    html_url:     z.string(),
-    location:     z.string().nullable(),
 });
 
 export default function CallbackPage() {
