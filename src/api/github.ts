@@ -81,6 +81,28 @@ export async function fetchAuthActivity(username: string, token: string) {
     return EventListSchema.parse(await res.json());
 }
 
+const SearchUserSchema = z.object({
+    id:         z.number(),
+    login:      z.string(),
+    avatar_url: z.string(),
+    html_url:   z.string(),
+});
+
+const SearchResultSchema = z.object({
+    items: z.array(SearchUserSchema),
+});
+
+export type SearchUser = z.infer<typeof SearchUserSchema>;
+
+export async function searchUsers(query: string): Promise<SearchUser[]> {
+    const res = await fetch(
+        `https://api.github.com/search/users?q=${encodeURIComponent(query)}&per_page=5`
+    );
+    if (!res.ok) throw new Error("Search failed");
+    const data = SearchResultSchema.parse(await res.json());
+    return data.items;
+}
+
 export function countTopLanguages(repos: { language: string | null }[]): string[] {
     const languageCounts: Record<string, number> = {};
 
