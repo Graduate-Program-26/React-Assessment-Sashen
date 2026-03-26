@@ -57,7 +57,8 @@ export default function CallbackPage() {
     }, [navigate, setToken, setUser]);
 
     return (
-        <div className="min-h-screen flex items-center justify-center">
+        <div className="min-h-screen flex flex-col items-center justify-center gap-3">
+            <div className="w-5 h-5 rounded-full border-2 border-muted border-t-foreground animate-spin" />
             <p className="text-muted-foreground text-sm animate-pulse">
                 Signing you in...
             </p>
